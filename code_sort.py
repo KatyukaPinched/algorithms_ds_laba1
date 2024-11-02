@@ -76,7 +76,7 @@ def Merge(A, p, q, r):
             j += 1
     return A
 
-def Shell_Sort(A):
+def Shell_Sort_Shell(A):
     step = len(A)//2
 
     while step > 0:
@@ -88,6 +88,57 @@ def Shell_Sort(A):
                 i -= step
                 A[i] = value
         step //= 2
+    return A
+
+def Shell_Sort_Hib(A):
+    n = len(A)
+    k = 0
+    step = 1
+
+    while step < n:
+        step = 2 ** k - 1
+        k += 1
+
+    while step > 0:
+        for i in range(step, n):
+            value = A[i]
+            j = i
+
+            while j >= step and A[j - step] > value:
+                A[j] = A[j - step]
+                j -= step
+
+            A[j] = value
+
+        k -= 1
+        step = 2 ** k - 1 if k > 0 else 0
+
+    return A
+
+def generate_pratt(n):
+    sequence = []
+    i, j = 0, 0
+    while True:
+        value = (2 ** i) * (3 ** j)
+        if value > n: break
+        sequence.append(value)
+        if i < j: j += 1
+        else: i += 1
+    return sequence
+
+def Shell_Sort_Pratt(A):
+    n = len(A)
+    pratt_sequence = generate_pratt(n)
+    pratt_sequence.reverse()
+
+    for step in pratt_sequence:
+        for i in range(step, n):
+            value = A[i]
+            j = i
+            while j >= step and A[j - step] > value:
+                A[j] = A[j - step]
+                j -= step
+            A[j] = value
     return A
 
 def Parent(i): return (i - 1) // 2
